@@ -106,16 +106,18 @@ app = Flask(__name__)
 def home():
     return render_template('home.html')
 
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return render_template('home.html')
+
 @app.route("/recommend")
 def recommend():
-    domain = request.args.get('DOMAIN')
-    r = rcmd(domain)
-    domain = domain.upper()
-    if type(r)==type('string'):
-        return render_template('recommend.html',domain=domain,r=r,t='s')
-    else:
-        return render_template('recommend.html',domain=domain,r=r,t='l')
-
+    domain = [int(x) for x in request.form.values()]
+    r = [np.array(domain)]
+    rcmd=rcom(r)
+    return render_template('index.html',prediction_text="Thus ".format(rcmd))
 
 # In[ ]:
 
